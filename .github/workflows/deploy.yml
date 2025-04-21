@@ -22,10 +22,11 @@ jobs:
         run: npm ci
 
       - name: Build Angular App
-        run: npm run build -- --configuration production
+        run:  ng build --configuration production --base-href /angular-gh-demo/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages       # The branch the action deploys to.
           folder: dist/angular-gh-demo   # The folder that the build script generates.
+          clean: true

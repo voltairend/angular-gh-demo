@@ -1,32 +1,35 @@
-name: Deploy Angular to GitHub Pages
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # or main
+      - main  # or "master" if that's your default
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
       - name: Install Dependencies
         run: npm ci
 
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
       - name: Build Angular App
-        run:  ng build --configuration production --base-href /angular-gh-demo/
+        run: ng build --configuration production --base-href /angular-gh-demo/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages       # The branch the action deploys to.
-          folder: dist/angular-gh-demo   # The folder that the build script generates.
+          branch: gh-pages
+          folder: dist/angular-gh-demo
           clean: true

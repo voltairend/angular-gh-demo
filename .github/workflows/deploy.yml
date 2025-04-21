@@ -25,12 +25,24 @@ jobs:
         run: npm install -g @angular/cli@16.1.8    
 
       - name: Build Angular App
-        run:  ng build --configuration production --base-href /angular-gh-demo/
+        run: ng build --configuration production --base-href /angular-gh-demo/
+
+      - name: Zip Build Folder
+        run: |
+          cd dist
+          zip -r angular-gh-demo.zip angular-gh-demo
+
+      - name: Upload Artifact - Zipped Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: angular-gh-demo-zip
+          path: dist/angular-gh-demo.zip
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages       # The branch the action deploys to.
-          folder: dist/angular-gh-demo   # The folder that the build script generates.
+          branch: gh-pages
+          folder: dist/angular-gh-demo
           clean: true
+
